@@ -39,7 +39,7 @@ bonus_timer = bonus_off_time
 bonus = 0
 
 
-def main():
+def start_game():
     global status
     global game_over
     global stars
@@ -88,8 +88,7 @@ def main():
         bonus_timer -= 1
         # place drop if needed
         if bonus_timer == bonus_on_time:
-            bonus = random.randint(1, 3)
-            bonus_object = place_bonus(bonus)
+            bonus_object = place_bonus(random.randint(1, 3))
         elif bonus_timer <= 0:
             bonus_object.kill()
             bonus_timer = bonus_off_time
@@ -315,12 +314,12 @@ class BulletSprite(pygame.sprite.Sprite):
         for i in range(5, 0, -1):
             color = 255.0 * float(i) / 5
             if bonus == 2:
-                pygame.draw.circle(self.image, (color, 0, 0), (5*3, 5*3), i*3, 0)
+                pygame.draw.circle(self.image, (color, 0, 0), (5 * 3, 5 * 3), i * 3, 0)
             else:
                 pygame.draw.circle(self.image, (0, 0, color), (5, 5), i, 0)
 
         self.rect = self.image.get_rect()
-        self.rect.center = (x+10, y - 25)
+        self.rect.center = (x + 10, y - 25)
         self.velocity = 10
 
     def update(self):
@@ -414,7 +413,10 @@ class ShipSprite(pygame.sprite.Sprite):
             if self.firing:
                 global bullet
                 bullet += 1
-                if bullet % 5 == 0:
+                fire_rate = 5
+                if bonus == 2:
+                    fire_rate = 7
+                if bullet % (10 - fire_rate) == 0:
                     self.shot = BulletSprite(x, y)
                     self.shot.add(self.groups)
                     bullet = 0
@@ -578,4 +580,4 @@ class Explosion(pygame.sprite.Sprite):
 
 
 if __name__ == '__main__':
-    main()
+    start_game()
