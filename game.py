@@ -101,7 +101,7 @@ def main():
 
         # Check for impact
         if bonus != 3:
-            hit_ships = pygame.sprite.spritecollide(ship, enemies, True)
+            hit_ships = pygame.sprite.spritecollide(ship, enemies, True, pygame.sprite.collide_mask)
             for i in hit_ships:
                 ship.health -= 10
 
@@ -311,7 +311,7 @@ def create_starfield(group):
 class BulletSprite(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(BulletSprite, self).__init__()
-        self.image = pygame.Surface((30, 30))
+        self.image = pygame.Surface((30, 30), pygame.SRCALPHA)
         for i in range(5, 0, -1):
             color = 255.0 * float(i) / 5
             if bonus == 2:
@@ -320,7 +320,7 @@ class BulletSprite(pygame.sprite.Sprite):
                 pygame.draw.circle(self.image, (0, 0, color), (5, 5), i, 0)
 
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y - 25)
+        self.rect.center = (x+10, y - 25)
         self.velocity = 10
 
     def update(self):
@@ -558,11 +558,12 @@ class Explosion(pygame.sprite.Sprite):
         self.images = []
         for i in range(0, 768, 48):
             rect = pygame.Rect((i, 0, 48, 48))
-            image = pygame.Surface(rect.size)
+            image = pygame.Surface(rect.size, pygame.SRCALPHA)
             image.blit(sheet, (0, 0), rect)
             self.images.append(image)
 
         self.image = self.images[0]
+        self.mask = pygame.mask.from_surface(self.image)
         self.index = 0
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -570,6 +571,7 @@ class Explosion(pygame.sprite.Sprite):
 
     def update(self):
         self.image = self.images[self.index]
+        self.mask = pygame.mask.from_surface(self.image)
         self.index += 1
         if self.index >= len(self.images):
             self.kill()

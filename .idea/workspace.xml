@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f50351ae-3b45-4a8c-8905-fb5ef4dc40b6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Drops/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Drops/1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Drops/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Drops/2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Drops/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Drops/3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
-    </list>
+    <list default="true" id="f50351ae-3b45-4a8c-8905-fb5ef4dc40b6" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +14,8 @@
       <file leaf-file-name="Game.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="316" column="25" selection-start-line="316" selection-start-column="25" selection-end-line="316" selection-end-column="25" />
+            <state relative-caret-position="279">
+              <caret line="322" column="32" selection-start-line="322" selection-start-column="32" selection-end-line="322" selection-end-column="32" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
                 <element signature="e#1503#1602#0" />
@@ -96,10 +91,6 @@
                 <element signature="e#14283#14308#0" />
                 <element signature="e#14396#14565#0" />
                 <element signature="e#14597#14614#0" />
-                <element signature="e#14660#15347#0" />
-                <element signature="e#14694#15188#0" />
-                <element signature="e#14861#15023#0" />
-                <element signature="e#15220#15347#0" />
               </folding>
             </state>
           </provider>
@@ -114,43 +105,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bonuses.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Bonuses.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="Ship.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ship.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Enemies.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Enemies.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Bullets.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Bullets.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>ShipSprite</find>
       <find>Ship.ShipSprite</find>
+      <find>spritecollide</find>
+      <find>Surface</find>
     </findStrings>
     <replaceStrings>
       <replace>Ship.ShipSprite</replace>
@@ -158,7 +120,13 @@
     </replaceStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="lidorshimoni &lt;lidor.shim@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -286,6 +254,10 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added bonuses" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added bonuses" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Bonuses.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -319,8 +291,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="316" column="25" selection-start-line="316" selection-start-column="25" selection-end-line="316" selection-end-column="25" />
+        <state relative-caret-position="279">
+          <caret line="322" column="32" selection-start-line="322" selection-start-column="32" selection-end-line="322" selection-end-column="32" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
             <element signature="e#1503#1602#0" />
@@ -396,10 +368,6 @@
             <element signature="e#14283#14308#0" />
             <element signature="e#14396#14565#0" />
             <element signature="e#14597#14614#0" />
-            <element signature="e#14660#15347#0" />
-            <element signature="e#14694#15188#0" />
-            <element signature="e#14861#15023#0" />
-            <element signature="e#15220#15347#0" />
           </folding>
         </state>
       </provider>
