@@ -82,7 +82,7 @@ def main():
     while True:
         clock.tick(60)
 
-        #bonus_timer-=1
+        bonus_timer -= 1
         # place drop if needed
         if bonus_timer == bonus_on_time:
             bonus = random.randint(1, 3)
@@ -101,6 +101,11 @@ def main():
             hit_ships = pygame.sprite.spritecollide(ship, enemies, True)
             for i in hit_ships:
                 ship.health -= 10
+
+        # Check if got bonus - fix
+        hit_bonus = pygame.sprite.spritecollide(ship, bonus_object, True)
+        for i in hit_bonus:
+            ship.health -= 10
 
         # Check for successful attacks
         hit_ships = pygame.sprite.groupcollide(enemies, weapon_fire, False, True)
@@ -190,7 +195,7 @@ class Bonus(pygame.sprite.Sprite):
         x, y = self.rect.center
         if pygame.mixer.get_init():
             self.sound.play(maxtime=1000)
-        super(EnemySprite, self).kill()
+        super(Bonus, self).kill()
 
 
 def freeze_all():
