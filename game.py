@@ -8,10 +8,12 @@ import pygame
 from pygame.locals import Rect, DOUBLEBUF, QUIT, K_ESCAPE, KEYDOWN, K_DOWN, \
     K_LEFT, K_UP, K_RIGHT, KEYUP, K_LCTRL, K_RETURN, FULLSCREEN
 
+# import Bonuses, Bullets, Enemies, Ship
+
 X_MAX = 800
 Y_MAX = 600
 
-LEFT, RIGHT, UP, DOWN = 0, 1, 3, 4#הוא לא יודע לספור
+LEFT, RIGHT, UP, DOWN = 0, 1, 2, 3
 START, STOP = 0, 1
 
 everything = pygame.sprite.Group()
@@ -32,13 +34,12 @@ enemies_alive = 10
 
 bullet = 0
 bonus_on_time = 300
-bonus_off_time = 2000
+bonus_off_time = 400
 bonus_timer = bonus_off_time
 bonus = 0
 
 
-
-def main():
+def start_game():
     global status
     global game_over
     global stars
@@ -72,6 +73,8 @@ def main():
 
     deadtimer = 50
 
+    bonus_object = 0
+
     # Get some music
     if pygame.mixer.get_init():
         pygame.mixer.music.load("Assets/Sound/DST-AngryMod.mp3")
@@ -85,8 +88,7 @@ def main():
         bonus_timer -= 1
         # place drop if needed
         if bonus_timer == bonus_on_time:
-            bonus = random.randint(1, 3)
-            bonus_object = place_bonus(bonus)
+            bonus_object = place_bonus(random.randint(1, 3))
         elif bonus_timer <= 0:
             bonus_object.kill()
             bonus_timer = bonus_off_time
@@ -98,14 +100,16 @@ def main():
 
         # Check for impact
         if bonus != 3:
-            hit_ships = pygame.sprite.spritecollide(ship, enemies, True)
+            hit_ships = pygame.sprite.spritecollide(ship, enemies, True, pygame.sprite.collide_mask)
             for i in hit_ships:
                 ship.health -= 10
 
-        # Check if got bonus - fix
-        hit_bonus = pygame.sprite.spritecollide(ship, bonus_object, True)
-        for i in hit_bonus:
-            ship.health -= 10
+        # Check if got bonus
+        if bonus_object and pygame.sprite.collide_mask(ship, bonus_object):
+            bonus = bonus_object.bonus_type
+            bonus_object.kill()
+            if bonus == 1:
+                ship.health = 100
 
         # Check for successful attacks
         hit_ships = pygame.sprite.groupcollide(enemies, weapon_fire, False, True)
@@ -123,7 +127,7 @@ def main():
 
         # Check for level up
         if ship.score > 500:
-            if stage >=5:
+            if stage >= 5:
                 ship.score = 0
                 ship.health = 0
             ship.score = 0
@@ -170,7 +174,7 @@ class Bonus(pygame.sprite.Sprite):
         self.image = pygame.image.load("Assets/Drops/" + str(bonus_type) + ".png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (x_pos, 0)
-
+        self.bonus_type = bonus_type
         self.velocity = random.randint(3, 6)
 
         self.add(groups)
@@ -221,7 +225,7 @@ def start_stage():
     global weapon_fire
     global enemies_alive
 
-    enemies_alive+=1
+    enemies_alive += 1
 
     # reset ship position
     ship.reset()
@@ -250,8 +254,7 @@ def transition_animation():
     global transition_timer
     global enemies
     global ship
-    transition_timer = int(abs(ship.rect.center[0] - X_MAX/2)/2 + 50)
-    print(transition_timer)
+    transition_timer = int(abs(ship.rect.center[0] - X_MAX / 2) / 2 + 50)
     pygame.mixer.music.fadeout(8000)
     for enemy in enemies:
         enemy.kill()
@@ -262,7 +265,7 @@ def transition_animation():
 
 def handle_event(event, game_over, ship, enemies):
     if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
-            sys.exit()
+        sys.exit()
     if not game_over:
         if event.type == KEYDOWN:
             if event.key == K_DOWN:
@@ -307,12 +310,16 @@ def create_starfield(group):
 class BulletSprite(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(BulletSprite, self).__init__()
-        self.image = pygame.Surface((10, 10))
+        self.image = pygame.Surface((30, 30), pygame.SRCALPHA)
         for i in range(5, 0, -1):
-            color = 255.0 * float(i)/5
-            pygame.draw.circle(self.image, (0, 0, color), (5, 5), i, 0)
+            color = 255.0 * float(i) / 5
+            if bonus == 2:
+                pygame.draw.circle(self.image, (color, 0, 0), (5 * 3, 5 * 3), i * 3, 0)
+            else:
+                pygame.draw.circle(self.image, (0, 0, color), (5, 5), i, 0)
+
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y-25)
+        self.rect.center = (x + 10, y - 25)
         self.velocity = 10
 
     def update(self):
@@ -338,7 +345,7 @@ class EnemySprite(pygame.sprite.Sprite):
         self.add(groups)
         self.explosion_sound = pygame.mixer.Sound("Assets/Sound/enemy_explosion.wav")
         self.explosion_sound.set_volume(0.4)
-        self.health=health
+        self.health = health
 
     def update(self):
         x, y = self.rect.center
@@ -356,9 +363,10 @@ class EnemySprite(pygame.sprite.Sprite):
 
     def hurt(self):
         global ship
-        self.health-=1
-        print(self.health)
-        if self.health<=0:
+        self.health -= 1
+        # if bonus == 2:
+        #     self.health -= 1
+        if self.health <= 0:
             self.kill()
             ship.score += 10
         else:
@@ -377,7 +385,7 @@ class ShipSprite(pygame.sprite.Sprite):
         super(ShipSprite, self).__init__()
         self.image = pygame.image.load("Assets\Ship\ship1.png")
         self.rect = self.image.get_rect()
-        self.rect.center = (X_MAX/2, Y_MAX - 40)
+        self.rect.center = (X_MAX / 2, Y_MAX - 40)
         self.dx = self.dy = 0
         self.firing = self.shot = False
         self.health = 100
@@ -404,25 +412,26 @@ class ShipSprite(pygame.sprite.Sprite):
             # Handle firing
             if self.firing:
                 global bullet
-                bullet+=1
-                if bullet % 5 == 0:
+                bullet += 1
+                fire_rate = 5
+                if bonus == 2:
+                    fire_rate = 7
+                if bullet % (10 - fire_rate) == 0:
                     self.shot = BulletSprite(x, y)
                     self.shot.add(self.groups)
                     bullet = 0
-
-
 
             if self.health < 0:
                 self.kill()
         else:
             if not self.in_position:
 
-                if x != X_MAX/2:
-                    x += (abs(X_MAX/2 - x)/(X_MAX/2 - x)) * 2
+                if x != X_MAX / 2:
+                    x += (abs(X_MAX / 2 - x) / (X_MAX / 2 - x)) * 2
                 if y != Y_MAX - 100:
-                    y += (abs(Y_MAX - 100 - y)/(Y_MAX - 100 - y)) * 2
+                    y += (abs(Y_MAX - 100 - y) / (Y_MAX - 100 - y)) * 2
 
-                if (x == X_MAX/2 or x-1 == X_MAX/2) and (y == Y_MAX - 100 or y+1 == Y_MAX - 100 ):
+                if (x == X_MAX / 2 or x - 1 == X_MAX / 2) and (y == Y_MAX - 100 or y + 1 == Y_MAX - 100):
                     self.in_position = True
 
             else:
@@ -450,9 +459,9 @@ class ShipSprite(pygame.sprite.Sprite):
                 self.dx = 0
 
     def shoot(self, operation):
-        if operation == START :
+        if operation == START:
             self.firing = True
-        else :
+        else:
             self.firing = False
 
     def freeze(self):
@@ -460,7 +469,7 @@ class ShipSprite(pygame.sprite.Sprite):
 
     def reset(self):
         self.image = pygame.image.load("Assets\Ship\ship" + str(stage) + ".png")
-        self.rect.center = (X_MAX/2, Y_MAX - 40)
+        self.rect.center = (X_MAX / 2, Y_MAX - 40)
         self.autopilot = False
         self.in_position = False
         self.velocity = 2
@@ -489,7 +498,9 @@ class StatusSprite(pygame.sprite.Sprite):
         self.add(groups)
 
     def update(self):
-        score = self.font.render("Health : {}   Score : {}    Stage : {}".format(self.ship.health, self.ship.score, stage), True, (150, 50, 50))
+        score = self.font.render(
+            "Health : {}   Score : {}    Stage : {}".format(self.ship.health, self.ship.score, stage), True,
+            (150, 50, 50))
         self.image.fill((0, 0, 0))
         self.image.blit(score, (0, 0))
 
@@ -549,11 +560,12 @@ class Explosion(pygame.sprite.Sprite):
         self.images = []
         for i in range(0, 768, 48):
             rect = pygame.Rect((i, 0, 48, 48))
-            image = pygame.Surface(rect.size)
+            image = pygame.Surface(rect.size, pygame.SRCALPHA)
             image.blit(sheet, (0, 0), rect)
             self.images.append(image)
 
         self.image = self.images[0]
+        self.mask = pygame.mask.from_surface(self.image)
         self.index = 0
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -561,10 +573,11 @@ class Explosion(pygame.sprite.Sprite):
 
     def update(self):
         self.image = self.images[self.index]
+        self.mask = pygame.mask.from_surface(self.image)
         self.index += 1
         if self.index >= len(self.images):
             self.kill()
 
 
 if __name__ == '__main__':
-    main()
+    start_game()
