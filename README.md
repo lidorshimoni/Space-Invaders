@@ -8,7 +8,7 @@ A pycharm implementation of the old and famous Space invaders
 * boost-drops
 
 ## Example
-![Example](Else/pic1.jpeg "Example")
+![Example](Else/pic1.PNG "Example")
 
 
 ## Dependencies
