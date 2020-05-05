@@ -3,7 +3,9 @@ By [Lidor Shimoni](https://github.com/lidorshimoni)
 
 A pycharm implementation of the old and famous Space invaders
 
-* multiple levels with high quality animations and boost-drops
+* multiple levels 
+* high quality animations 
+* boost-drops
 
 ## Example
 ![Example](Else/pic1.jpeg "Example")
