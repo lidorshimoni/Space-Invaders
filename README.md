@@ -1,7 +1,7 @@
 # Space Invaders
 By [Lidor Shimoni](https://github.com/lidorshimoni)
 
-A pycharm implementation of the old and famous Space invaders
+A pygame implementation of the old and famous Space invaders
 
 * multiple levels 
 * high quality animations 
@@ -14,5 +14,5 @@ A pycharm implementation of the old and famous Space invaders
 ## Dependencies
 The following dependencies are required:
 * python 3.X
-* pycharm
+* pygame
 
